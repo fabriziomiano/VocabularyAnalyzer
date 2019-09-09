@@ -7,7 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="">
-
+  <link href="/static/favicon.ico" rel="icon"  type="image/x-icon">
   <title>Vocabulary Analyzer</title>
 
   <!-- Font Awesome Icons -->
@@ -22,6 +22,11 @@
 
   <!-- Theme CSS - Includes Bootstrap -->
   <link href="/static/css/creative.min.css" rel="stylesheet">
+
+  <!-- Bootstrap stuff -->
+<!--  <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">-->
+  <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="//code.jquery.com/jquery-1.11.1.min.js"></script>
 
 </head>
 
@@ -87,12 +92,14 @@
     </div>
   </section>
 
-  <!-- Services Section -->
+  <!-- Analyze Section -->
   <section class="page-section" id="services">
     <div class="container">
       <h2 class="text-center mt-0">Provide a searchable PDF file</h2>
       <hr class="divider my-4">
-<!--      <div class="row">-->
+
+
+      <div class="row">
 <!--        <div class="col-lg-3 col-md-6 text-center">-->
 <!--          <div class="mt-5">-->
 <!--            <i class="fas fa-4x fa-gem text-primary mb-4"></i>-->
@@ -100,6 +107,7 @@
 <!--            <p class="text-muted mb-0">Our themes are updated regularly to keep them bug free!</p>-->
 <!--          </div>-->
 <!--        </div>-->
+
 <!--        <div class="col-lg-3 col-md-6 text-center">-->
 <!--          <div class="mt-5">-->
 <!--            <i class="fas fa-4x fa-laptop-code text-primary mb-4"></i>-->
@@ -107,6 +115,7 @@
 <!--            <p class="text-muted mb-0">All dependencies are kept current to keep things fresh.</p>-->
 <!--          </div>-->
 <!--        </div>-->
+
 <!--        <div class="col-lg-3 col-md-6 text-center">-->
 <!--          <div class="mt-5">-->
 <!--            <i class="fas fa-4x fa-globe text-primary mb-4"></i>-->
@@ -114,6 +123,7 @@
 <!--            <p class="text-muted mb-0">You can use this design as is, or you can make changes!</p>-->
 <!--          </div>-->
 <!--        </div>-->
+
 <!--        <div class="col-lg-3 col-md-6 text-center">-->
 <!--          <div class="mt-5">-->
 <!--            <i class="fas fa-4x fa-heart text-primary mb-4"></i>-->
@@ -121,14 +131,46 @@
 <!--            <p class="text-muted mb-0">Is it really open source if it's not made with love?</p>-->
 <!--          </div>-->
 <!--        </div>-->
+
+
+
+<!--      <div class="container">-->
+<!--        <form method="POST" action="/analyzer">-->
+<!--          <div class="row justify-content-center">-->
+<!--          <span class="input-group-btn">-->
+<!--          <input type="submit" value="Upload your PDF file" class="btn btn-lg btn-primary" />-->
+<!--          </span>-->
+<!--          </div>-->
+<!--        </form>-->
 <!--      </div>-->
-      <form method="POST" action="/analyzer">
-        <div class="row justify-content-center">
-        <span class="input-group-btn">
-        <input type="submit" value="Upload your PDF file" class="btn btn-lg btn-primary" />
-        </span>
-        </div>
-      </form>
+
+
+        <script>
+          function doSubmit(){
+            // Form Data
+            var formData = new FormData();
+
+            var fileSelect = document.getElementById("fileSelect");
+            if(fileSelect.files && fileSelect.files.length == 1){
+             var file = fileSelect.files[0]
+             formData.set("file", file, file.name);
+            }
+
+            var input1 = document.getElementById("input1");
+            formData.set("input1", input1.value)
+            // Http Request
+            var request = new XMLHttpRequest();
+            request.open('POST', "/api/upload");
+            request.send(formData);
+          }
+        </script>
+        <form>
+          <input type="text" id="input1"/>
+          <input type="file" id="fileSelect"/>
+  <!--        <input type="submit" value="Upload your PDF file" class="btn btn-lg btn-primary" onclick="doSubmit()"/>-->
+          <button type="button" class="btn btn-lg btn-primary" onclick="doSubmit()">Submit</button>
+        </form>
+      </div>
     </div>
   </section>
 
@@ -137,8 +179,21 @@
     <div class="container-fluid p-0">
       <div class="row no-gutters">
         <div class="col-lg-4 col-sm-6">
-          <a class="portfolio-box" href="/static/img/portfolio/fullsize/wordcloud.png">
-            <img class="img-fluid" src="/static/img/portfolio/thumbnails/wordcloud.png" alt="">
+          <a class="portfolio-box" href="/static/img/results/fullsize/wordcloud.png">
+            <img class="img-fluid" src="/static/img/results/thumbnails/wordcloud.png" alt="">
+            <div class="portfolio-box-caption">
+              <div class="project-category text-white-50">
+                Word Cloud
+              </div>
+<!--              <div class="project-name">-->
+<!--                Project Name-->
+<!--              </div>-->
+            </div>
+          </a>
+        </div>
+        <div class="col-lg-4 col-sm-6">
+          <a class="portfolio-box" href="/static/img/results/fullsize/Nouns.png">
+            <img class="img-fluid" src="/static/img/results/thumbnails/Nouns.png" alt="">
             <div class="portfolio-box-caption">
               <div class="project-category text-white-50">
                 Nouns
@@ -150,21 +205,8 @@
           </a>
         </div>
         <div class="col-lg-4 col-sm-6">
-          <a class="portfolio-box" href="/static/img/portfolio/fullsize/Nouns.png">
-            <img class="img-fluid" src="/static/img/portfolio/thumbnails/Nouns.png" alt="">
-            <div class="portfolio-box-caption">
-              <div class="project-category text-white-50">
-                Nouns
-              </div>
-<!--              <div class="project-name">-->
-<!--                Project Name-->
-<!--              </div>-->
-            </div>
-          </a>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-          <a class="portfolio-box" href="/static/img/portfolio/fullsize/Verbs.png">
-            <img class="img-fluid" src="/static/img/portfolio/thumbnails/Verbs.png" alt="">
+          <a class="portfolio-box" href="/static/img/results/fullsize/Verbs.png">
+            <img class="img-fluid" src="/static/img/results/thumbnails/Verbs.png" alt="">
             <div class="portfolio-box-caption">
               <div class="project-category text-white-50">
                 Verbs
@@ -176,67 +218,67 @@
           </a>
         </div>
         <div class="col-lg-4 col-sm-6">
-          <a class="portfolio-box" href="/static/img/portfolio/fullsize/Adjectives.png">
-            <img class="img-fluid" src="/static/img/portfolio/thumbnails/Adjectives.png" alt="">
+          <a class="portfolio-box" href="/static/img/results/fullsize/Adjectives.png">
+            <img class="img-fluid" src="/static/img/results/thumbnails/Adjectives.png" alt="">
             <div class="portfolio-box-caption">
               <div class="project-category text-white-50">
-                Category
+                Adjectives
               </div>
-              <div class="project-name">
-                Project Name
-              </div>
+<!--              <div class="project-name">-->
+<!--                Project Name-->
+<!--              </div>-->
             </div>
           </a>
         </div>
         <div class="col-lg-4 col-sm-6">
-          <a class="portfolio-box" href="/static/img/portfolio/fullsize/Adverbs.png">
-            <img class="img-fluid" src="/static/img/portfolio/thumbnails/Adverbs.png" alt="">
+          <a class="portfolio-box" href="/static/img/results/fullsize/Adverbs.png">
+            <img class="img-fluid" src="/static/img/results/thumbnails/Adverbs.png" alt="">
             <div class="portfolio-box-caption">
               <div class="project-category text-white-50">
-                Category
+                Adverbs
               </div>
-              <div class="project-name">
-                Project Name
-              </div>
+<!--              <div class="project-name">-->
+<!--                Project Name-->
+<!--              </div>-->
             </div>
           </a>
         </div>
         <div class="col-lg-4 col-sm-6">
-          <a class="portfolio-box" href="/static/img/portfolio/fullsize/Entities.png">
-            <img class="img-fluid" src="/static/img/portfolio/thumbnails/Entities.png" alt="">
+          <a class="portfolio-box" href="/static/img/results/fullsize/Entities.png">
+            <img class="img-fluid" src="/static/img/results/thumbnails/Entities.png" alt="">
             <div class="portfolio-box-caption">
               <div class="project-category text-white-50">
-                Category
+                Named Entities
               </div>
-              <div class="project-name">
-                Project Name
-              </div>
+<!--              <div class="project-name">-->
+<!--                Project Name-->
+<!--              </div>-->
             </div>
           </a>
         </div>
         <div class="col-lg-4 col-sm-6">
-          <a class="portfolio-box" href="/static/img/portfolio/fullsize/Entity&20Types.png">
-            <img class="img-fluid" src="/static/img/portfolio/thumbnails/Entity Types.png" alt="">
+          <a class="portfolio-box" href="/static/img/results/fullsize/Entity Types.png">
+            <img class="img-fluid" src="/static/img/results/thumbnails/Entity Types.png" alt="">
             <div class="portfolio-box-caption p-3">
               <div class="project-category text-white-50">
-                Category
+                Entity Types
               </div>
-              <div class="project-name">
-                Project Name
-              </div>
+<!--              <div class="project-name">-->
+<!--                Project Name-->
+<!--              </div>-->
             </div>
           </a>
         </div>
         <div class="col-lg-4 col-sm-6">
-          <a class="portfolio-box" href="/static/img/portfolio/fullsize/kwords_count.png">
-            <img class="img-fluid" src="/static/img/portfolio/thumbnails/kwords_count.png" alt="">
+          <a class="portfolio-box" href="/static/img/results/fullsize/kwords_count.png">
+            <img class="img-fluid" src="/static/img/results/thumbnails/kwords_count.png" alt="">
             <div class="portfolio-box-caption p-3">
               <div class="project-category text-white-50">
-                Category
+                Keywords
               </div>
-              <div class="project-name">
-                Project Name
-              </div>
+<!--              <div class="project-name">-->
+<!--                Project Name-->
+<!--              </div>-->
             </div>
           </a>
         </div>
