@@ -1,0 +1,21 @@
+ALLOWED_EXTENSIONS = "pdf"
+ENTITY_ABBRV_MAP = {
+    "CARDINAL": "Numerals not under another type",
+    "DATE": "Absolute or relative dates",
+    "EVENT": "Hurricanes, wars, sports events,...",
+    "FAC": "Facilities",
+    "GPE": "Countries, cities, states",
+    "LANGUAGE": "Any named language",
+    "LAW": "Named documents made into laws",
+    "LOC": "Non-GPE locations",
+    "MONEY": "Monetary values, including unit",
+    "NORP": "Nationalities, religious, or political groups",
+    "ORDINAL": "”first“, ”second“,...",
+    "ORG": "Companies, agencies, institutions",
+    "PERCENT": "Percentage, including ”%“",
+    "PERSON": "People, including fictional",
+    "PRODUCT": "Objects, vehicles, foods, etc.",
+    "QUANTITY": "Measurements",
+    "TIME": "Times smaller than a day",
+    "WORK_OF_ART": "Titles of books, songs,...",
+}
