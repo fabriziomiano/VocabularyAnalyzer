@@ -55,7 +55,7 @@ def write_entitytypes_legend(data, ax):
 
 def plot_pos(data, out_dir_name, n_max_words, type_pos):
     """
-    Save a bar plot of the adverb count
+    Save a bar plot of a certain part of speech
     :param data: list
     :param out_dir_name: str
     :param n_max_words: int
