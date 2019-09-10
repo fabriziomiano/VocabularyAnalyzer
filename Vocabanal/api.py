@@ -2,12 +2,11 @@
 Routes and APIs for the flask application.
 """
 import os
-import spacy
 import json
 from io import BytesIO
-from flask import request, url_for, flash, redirect, Response
+from flask import request, flash, redirect, Response
 from werkzeug.utils import secure_filename
-from Vocabanal import app, UPLOAD_FOLDER, RESULTS_FOLDER
+from Vocabanal import app, nlp, UPLOAD_FOLDER, RESULTS_FOLDER
 from Vocabanal.classes.Text import TextPreprocessor
 from Vocabanal.modules.data import get_data, normalize_data, kwords_count
 from Vocabanal.modules.plot import plot_pos, plot_kwords
@@ -73,7 +72,6 @@ def analyze(filename):
     corpus = extract_text(pdf_byte_content)
     app.logger.info("Loading spaCy English model. This may take up to 1 minute")
     # nlp = spacy.load("en_core_web_sm")
-    nlp = spacy.load("en_core_web_md")
     app.logger.info("Model loaded")
     doc = nlp(corpus)
     doc_data = get_data(nlp, doc)
