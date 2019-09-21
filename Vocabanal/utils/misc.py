@@ -1,5 +1,6 @@
 import os
 import errno
+from base64 import b64encode
 from wordcloud import WordCloud
 from Vocabanal import app
 from Vocabanal.classes.Pdf import PdfHandler
@@ -68,3 +69,22 @@ def save_wordcloud(corpus, out_dir_name):
     wc.generate(corpus)
     output_fp = os.path.join(out_dir_name, "wordcloud.png")
     wc.to_file(output_fp)
+
+
+def b64str_from_path(path):
+    """
+    Return a base64 image from a given path
+    :param path: str
+    :return: str
+    """
+    try:
+        with open(path, "rb") as img_file:
+            app.logger.debug(
+                "Encoding image {} to base64 string".format(os.path.basename(path)))
+            img_bytes = img_file.read()
+        img_str = b64encode(img_bytes).decode('utf-8')
+        return img_str
+    except Exception as e:
+        app.logger.error(e)
+        return e
+
