@@ -1,5 +1,5 @@
 """
-This script runs the flaskwebapp application using a development server.
+This script runs the vocab anal application using a development server.
 """
 from Vocabanal import app
 
