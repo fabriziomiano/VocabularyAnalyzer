@@ -4,11 +4,10 @@ Routes and views for the flask application.
 from datetime import datetime
 from flask import render_template
 from Vocabanal import app
-ALLOWED_EXTENSIONS = "pdf, tex"
 
 
 @app.errorhandler(404)
-def page_not_found():
+def page_not_found(e):
     return render_template('404.html'), 404
 
 
