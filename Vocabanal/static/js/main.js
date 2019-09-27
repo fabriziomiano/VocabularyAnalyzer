@@ -75,7 +75,7 @@ $(document).ready(function() {
 			event.preventDefault();
 
 			let params = {
-				'fileName': response.uuid
+				'fileName': 'results'
 			};
 
 			downloadFile(response.uuid, onDownloadSuccess, onDownloadError, params);
