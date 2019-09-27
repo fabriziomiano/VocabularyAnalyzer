@@ -1,8 +1,10 @@
 import os
 import seaborn as sns
-from Vocabanal import app
+from Vocabanal import app, RESULTS_FOLDER
 from Vocabanal.utils.constants import ENTITY_ABBRV_MAP
+from Vocabanal.utils.misc import b64str_from_path
 from matplotlib import pyplot as plt
+from flask import make_response, jsonify
 
 
 def save_barplot(data, labels, n_max, path, title):
@@ -104,3 +106,20 @@ def plot_kwords(kwords_data, out_dir_name, n_max_words):
         kwords_plot_fp,
         title="Top {} Keywords".format(n_max_words)
     )
+
+
+def serve_plots(request_uuid):
+    results_dir = os.path.join(RESULTS_FOLDER, request_uuid)
+    results = dict()
+    for plot_filename in os.listdir(results_dir):
+        plot_name = os.path.splitext(plot_filename)[0]
+        if "_" in plot_filename:
+            plot_name = plot_name.replace("_", " ")
+        plot_path = os.path.join(results_dir, plot_filename)
+        plot_str = b64str_from_path(plot_path)
+        if isinstance(plot_str, Exception):
+            continue
+        else:
+            results[plot_name] = plot_str
+    return make_response(
+        jsonify(uuid=request_uuid, status="OK", results=results), 200)

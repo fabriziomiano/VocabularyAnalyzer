@@ -1,5 +1,14 @@
+import os
 from collections import Counter
-from Vocabanal import app
+from io import BytesIO
+from pdfminer.pdfparser import PDFSyntaxError
+from Vocabanal import app, UPLOAD_FOLDER, RESULTS_FOLDER
+from Vocabanal.classes.Text import TextPreprocessor
+from Vocabanal.modules.plot import plot_pos, plot_kwords, serve_plots
+from Vocabanal.utils.misc import extract_text, create_nonexistent_dir, save_wordcloud
+from flask import make_response, jsonify
+import spacy
+NLP = spacy.load("en_core_web_sm")
 
 
 def kwords_count(corpus):
@@ -105,3 +114,35 @@ def normalize_data(data):
         for key, value in data.items()
     }
     return normalized_data
+
+
+def analyze(request_uuid, filename):
+    filepath = os.path.join(UPLOAD_FOLDER, request_uuid, filename)
+    n_max_words = 15
+    try:
+        with open(filepath, "rb") as file_in:
+            pdf_byte_content = BytesIO(file_in.read())
+    except PDFSyntaxError as e:
+        return make_response(
+            jsonify(status="KO", message=e),
+            400)
+    corpus = extract_text(pdf_byte_content)
+    app.logger.info("Loading spaCy English model. This may take up to 1 minute")
+    app.logger.info("Model loaded")
+    doc = NLP(corpus)
+    doc_data = get_data(NLP, doc)
+    norm_data = normalize_data(doc_data)
+    results_dir = os.path.join(RESULTS_FOLDER, request_uuid)
+    create_nonexistent_dir(results_dir)
+    save_wordcloud(corpus, results_dir)
+    for pos in norm_data.keys():
+        if len(norm_data[pos]) != 0:
+            plot_pos(norm_data[pos], results_dir, n_max_words, type_pos=pos)
+    tp = TextPreprocessor(corpus)
+    cleaned_text = tp.preprocess()
+    kwords_data = kwords_count(cleaned_text)
+    if len(kwords_data) != 0:
+        plot_kwords(kwords_data, results_dir, n_max_words)
+    else:
+        app.logger.warning("No keywords found in the provided PDF")
+    return serve_plots(request_uuid)
