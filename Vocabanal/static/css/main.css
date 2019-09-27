@@ -1,18 +1,22 @@
 .loader {
     visibility: hidden;
-    display: block;
-    position: absolute;
-    top: 30%;
+    display: none; /* block; */
+    position: relative;
     border: 16px solid #f3f3f3; /* Light grey */
     border-top: 16px solid #3498db; /* Blue */
     border-radius: 50%;
     width: 120px;
-    height: 120px;
+    min-height: 120px;
     animation: spin 2s linear infinite;
 }
 
 .loader {
     z-index: 10;
+}
+
+.loader-container {
+    width: 50%;
+    margin: 0 auto;
 }
   
 @keyframes spin {
@@ -20,6 +24,21 @@
 100% { transform: rotate(360deg); }
 }
 
-.portfolio-container {
+#portfolio {
+    min-height: 150px;
+    text-align: center;
+}
+
+#portfolio-container {
+    /* visibility: hidden; */
     display: none;
 }
+
+#download {
+    display: none;
+}
+
+a{
+    cursor: pointer;
+}
+

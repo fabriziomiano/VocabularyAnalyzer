@@ -178,146 +178,24 @@
   </section>
 
   <!-- Portfolio Section -->
+   
   <section id="portfolio">
-    <div class="container-fluid p-0">
-      <div class="row no-gutters">
-        <div class="col-lg-4 col-sm-6">
-          <div class="loader"></div>            
-            <div class="portfolio-container">
-              <a class="portfolio-box" href="/static/img/results/fullsize/wordcloud.png">
-                <img class="img-fluid" src="/static/img/results/thumbnails/wordcloud.png" alt="">
-                <div class="portfolio-box-caption">
-                  <div class="project-category text-white-50">
-                    Word Cloud
-                  </div>
-    <!--              <div class="project-name">-->
-    <!--                Project Name-->
-    <!--              </div>-->
-                </div>
-              </a>
-          </div>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-            <div class="loader"></div>
-            <div class="portfolio-container">
-              <a class="portfolio-box" href="/static/img/results/fullsize/Nouns.png">
-                <img class="img-fluid" src="/static/img/results/thumbnails/Nouns.png" alt="">
-                <div class="portfolio-box-caption">
-                  <div class="project-category text-white-50">
-                    Nouns
-                  </div>
-    <!--              <div class="project-name">-->
-    <!--                Project Name-->
-    <!--              </div>-->
-                </div>
-              </a>
-          </div>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-          <div class="loader"></div>
-          <div class="portfolio-container">
-            <a class="portfolio-box" href="/static/img/results/fullsize/Verbs.png">
-              <img class="img-fluid" src="/static/img/results/thumbnails/Verbs.png" alt="">
-              <div class="portfolio-box-caption">
-                <div class="project-category text-white-50">
-                  Verbs
-                </div>
-    <!--              <div class="project-name">-->
-    <!--                Project Name-->
-    <!--              </div>-->
-              </div>
-            </a>
-          </div>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-            <div class="loader"></div>
-            <div class="portfolio-container">
-              <a class="portfolio-box" href="/static/img/results/fullsize/Adjectives.png">
-                <img class="img-fluid" src="/static/img/results/thumbnails/Adjectives.png" alt="">
-                <div class="portfolio-box-caption">
-                  <div class="project-category text-white-50">
-                    Adjectives
-                  </div>
-    <!--              <div class="project-name">-->
-    <!--                Project Name-->
-    <!--              </div>-->
-                </div>
-              </a>
-          </div>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-            <div class="loader"></div>
-            <div class="portfolio-container">
-              <a class="portfolio-box" href="/static/img/results/fullsize/Adverbs.png">
-                <img class="img-fluid" src="/static/img/results/thumbnails/Adverbs.png" alt="">
-                <div class="portfolio-box-caption">
-                  <div class="project-category text-white-50">
-                    Adverbs
-                  </div>
-    <!--              <div class="project-name">-->
-    <!--                Project Name-->
-    <!--              </div>-->
-                </div>
-              </a>
-          </div>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-            <div class="loader"></div>
-            <div class="portfolio-container">
-              <a class="portfolio-box" href="/static/img/results/fullsize/Entities.png">
-                <img class="img-fluid" src="/static/img/results/thumbnails/Entities.png" alt="">
-                <div class="portfolio-box-caption">
-                  <div class="project-category text-white-50">
-                    Named Entities
-                  </div>
-    <!--              <div class="project-name">-->
-    <!--                Project Name-->
-    <!--              </div>-->
-                </div>
-              </a>
-          </div>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-            <div class="loader"></div>
-            <div class="portfolio-container">
-              <a class="portfolio-box" href="/static/img/results/fullsize/Entity Types.png">
-                <img class="img-fluid" src="/static/img/results/thumbnails/Entity Types.png" alt="">
-                <div class="portfolio-box-caption p-3">
-                  <div class="project-category text-white-50">
-                    Entity Types
-                  </div>
-    <!--              <div class="project-name">-->
-    <!--                Project Name-->
-    <!--              </div>-->
-                </div>
-              </a>
-          </div>
-        </div>
-        <div class="col-lg-4 col-sm-6">
-            <div class="loader"></div>
-            <div class="portfolio-container">
-              <a class="portfolio-box" href="/static/img/results/fullsize/kwords_count.png">
-                <img class="img-fluid" src="/static/img/results/thumbnails/kwords_count.png" alt="">
-                <div class="portfolio-box-caption p-3">
-                  <div class="project-category text-white-50">
-                    Keywords
-                  </div>
-    <!--              <div class="project-name">-->
-    <!--                Project Name-->
-    <!--              </div>-->
-                </div>
-              </a>
-          </div>  
+    <div class="loader-container">
+      <div class="loader"></div>
+    </div>
+    <div id="portfolio-container">
+      <div class="container-fluid p-0">
+        <div class="row no-gutters">
         </div>
       </div>
-    </div>
+    </div> 
   </section>
 
   <!-- Call to Action Section -->
-  <section class="page-section bg-dark text-white">
+  <section id="download" class="page-section bg-dark text-white">
     <div class="container text-center">
       <h2 class="mb-4">Download the results</h2>
-      <a class="btn btn-light btn-xl" href="/api/download">Download Now!</a>
+      <a class="btn btn-primary btn-xl">Download Now!</a>
     </div>
   </section>
 
@@ -365,7 +243,19 @@
 
   <!-- Custom scripts for this template -->
   <script src="/static/js/creative.min.js"></script>
-  <script src="/static/js/service.js"></script>
+  <script src="/static/js/main.js"></script>
+
+  <script id="hidden-portfolio-template" type="text/x-custom-template">
+    <div class="col-lg-4 col-sm-6">                  
+        <a class="portfolio-box" href="">
+          <img class="img-fluid" src="" alt="">
+          <div class="portfolio-box-caption">
+            <div class="project-category text-white-50">
+            </div>
+          </div>
+        </a>
+    </div>
+  </script>
 
 </body>
 
