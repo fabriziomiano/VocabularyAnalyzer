@@ -4,6 +4,17 @@ from base64 import b64encode
 from wordcloud import WordCloud
 from Vocabanal import app
 from Vocabanal.classes.Pdf import PdfHandler
+from Vocabanal.utils.constants import ALLOWED_EXTENSIONS
+
+
+def allowed_file(filename):
+    """
+    Validate the filename
+    :param filename: str
+    :return: bool
+    """
+    return "." in filename and \
+           filename.rsplit(".", 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
 def extract_text(stream_in):
@@ -79,12 +90,9 @@ def b64str_from_path(path):
     """
     try:
         with open(path, "rb") as img_file:
-            app.logger.debug(
-                "Encoding image {} to base64 string".format(os.path.basename(path)))
             img_bytes = img_file.read()
         img_str = b64encode(img_bytes).decode('utf-8')
         return img_str
     except Exception as e:
         app.logger.error(e)
         return e
-
