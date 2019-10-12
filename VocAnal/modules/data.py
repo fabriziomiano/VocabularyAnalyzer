@@ -1,14 +1,13 @@
 import os
+from flask import make_response, jsonify
 from collections import Counter
 from io import BytesIO
 from pdfminer.pdfparser import PDFSyntaxError
-from Vocabanal import app, UPLOAD_FOLDER, RESULTS_FOLDER
-from Vocabanal.classes.Text import TextPreprocessor
-from Vocabanal.modules.plot import plot_pos, plot_kwords, serve_plots
-from Vocabanal.utils.misc import extract_text, create_nonexistent_dir, save_wordcloud
-from flask import make_response, jsonify
-import spacy
-NLP = spacy.load("en_core_web_sm")
+from VocAnal import app, UPLOAD_FOLDER, RESULTS_FOLDER, NLP
+from VocAnal.classes.Text import TextPreprocessor
+from VocAnal.modules.plot import plot_pos, plot_kwords, serve_plots
+from VocAnal.utils.misc import (
+    extract_text, create_nonexistent_dir, save_wordcloud)
 
 
 def kwords_count(corpus):
@@ -18,7 +17,7 @@ def kwords_count(corpus):
     :param corpus: list
     :return: list
     """
-    app.logger.info("Running keywords count")
+    app.logger.debug("Running keywords count")
     return Counter(corpus.split()).most_common()
 
 
@@ -43,7 +42,7 @@ def get_data(nlp, doc):
     :param doc: spacy.tokens.doc.Doc object
     :return: dict
     """
-    app.logger.info("Getting data from doc")
+    app.logger.debug("Getting data from doc")
     nouns, adjectives = [], []
     adverbs, verbs = [], []
     entities, entity_types = [], []
@@ -127,7 +126,7 @@ def analyze(request_uuid, filename):
             jsonify(status="KO", message=e),
             400)
     corpus = extract_text(pdf_byte_content)
-    app.logger.info("Loading spaCy English model. This may take up to 1 minute")
+    app.logger.info("Loading spaCy English model may take up to 1 minute")
     app.logger.info("Model loaded")
     doc = NLP(corpus)
     doc_data = get_data(NLP, doc)
