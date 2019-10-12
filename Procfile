@@ -1,1 +1,1 @@
-web: gunicorn Vocabanal:app
+web: gunicorn VocAnal:app
