@@ -2,9 +2,9 @@ import os
 import errno
 from base64 import b64encode
 from wordcloud import WordCloud
-from Vocabanal import app
-from Vocabanal.classes.Pdf import PdfHandler
-from Vocabanal.utils.constants import ALLOWED_EXTENSIONS
+from VocAnal import app
+from VocAnal.classes.Pdf import PdfHandler
+from VocAnal.utils.constants import ALLOWED_EXTENSIONS
 
 
 def allowed_file(filename):
@@ -52,7 +52,7 @@ def create_nonexistent_dir(path, exc_raise=False):
     """
     try:
         os.makedirs(path)
-        app.logger.info("Created directory with path: {}".format(path))
+        app.logger.debug("Created directory with path: {}".format(path))
     except OSError as e:
         if e.errno != errno.EEXIST:
             app.logger.exception(
@@ -69,7 +69,7 @@ def save_wordcloud(corpus, out_dir_name):
     :param out_dir_name: str: output directory
     :return: None
     """
-    app.logger.info("Making Word Cloud image")
+    app.logger.debug("Making Word Cloud image")
     wc = WordCloud(
         width=800,
         height=600,

@@ -1,8 +1,8 @@
 import os
 import seaborn as sns
-from Vocabanal import app, RESULTS_FOLDER
-from Vocabanal.utils.constants import ENTITY_ABBRV_MAP
-from Vocabanal.utils.misc import b64str_from_path
+from VocAnal import app, RESULTS_FOLDER
+from VocAnal.utils.constants import ENTITY_ABBRV_MAP
+from VocAnal.utils.misc import b64str_from_path
 from matplotlib import pyplot as plt
 from flask import make_response, jsonify
 
@@ -43,7 +43,7 @@ def write_entitytypes_legend(data, ax):
     :param ax: plt axes object
     :return: None
     """
-    app.logger.info("Writing legend on Entity Types plot")
+    app.logger.debug("Writing legend on Entity Types plot")
     legend_text = ""
     for k, v in ENTITY_ABBRV_MAP.items():
         for ent_type in data:
@@ -64,7 +64,7 @@ def plot_pos(data, out_dir_name, n_max_words, type_pos):
     :param type_pos: str
     :return: None
     """
-    app.logger.info("Making plot for {}".format(type_pos))
+    app.logger.debug("Making plot for {}".format(type_pos))
     if n_max_words < len(data):
         plot_title = (
                 "Top {} ".format(n_max_words) + type_pos +
@@ -94,9 +94,8 @@ def plot_kwords(kwords_data, out_dir_name, n_max_words):
     :param n_max_words: int
     :return: None
     """
-    app.logger.info(
-        "Making plot for the top {} keywords".format(n_max_words)
-    )
+    message = "Making plot for the top {} keywords".format(n_max_words)
+    app.logger.debug(message)
     kwords_labels = ["Keywords", "Counts"]
     kwords_plot_fp = os.path.join(out_dir_name, "kwords_count.png")
     save_barplot(
