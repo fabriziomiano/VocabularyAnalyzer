@@ -1,23 +1,22 @@
 """
-Routes and APIs for the flask application.
+Routes for the flask application
 """
 import os
 import shutil
 from uuid import uuid4
 from zipfile import ZipFile, ZIP_DEFLATED
 from werkzeug.utils import secure_filename
-from Vocabanal import app, UPLOAD_FOLDER, RESULTS_FOLDER
-from Vocabanal.modules.data import analyze
-from Vocabanal.utils.misc import create_nonexistent_dir, allowed_file
+from VocAnal import app, UPLOAD_FOLDER, RESULTS_FOLDER
+from VocAnal.modules.data import analyze
+from VocAnal.utils.misc import create_nonexistent_dir, allowed_file
 from flask import (
-    request, flash, redirect,
-    jsonify, send_from_directory
+    request, flash, redirect, jsonify, send_from_directory, make_response
 )
 
 
 @app.route("/api/upload", methods=["POST"])
 def upload():
-    """Return the files produced"""
+    """Upload a file to the server and call the anlyze function"""
     if request.method == "POST":
         if "file" not in request.files:
             flash("No file part")
@@ -32,7 +31,7 @@ def upload():
             create_nonexistent_dir(updir_path)
             filename = secure_filename(file.filename)
             filepath = os.path.join(updir_path, filename)
-            app.logger.info("Saving {} to {}".format(filename, filepath))
+            app.logger.debug("Saving {} to {}".format(filename, filepath))
             file.save(filepath)
             return analyze(request_uuid, filename)
 
@@ -40,7 +39,7 @@ def upload():
 @app.route("/api/download/<request_uuid>")
 def download(request_uuid):
     """
-    Send the archive of the produced files
+    Send the archive containing the produced files
     :param request_uuid: str
     :return: send_from_directory
     """
@@ -60,6 +59,11 @@ def download(request_uuid):
 
 @app.route("/api/delete/<request_uuid>", methods=["POST"])
 def delete_data(request_uuid):
+    """
+    Delete the data for a given request_uuid
+    :param request_uuid: str
+    :return: JSON object
+    """
     if request.method == "POST":
         dir_paths = [
             os.path.join(UPLOAD_FOLDER, request_uuid),
@@ -70,4 +74,5 @@ def delete_data(request_uuid):
                 shutil.rmtree(dir_path)
             except FileNotFoundError:
                 pass
-        return jsonify(status="OK", message="removed batch {}".format(request_uuid))
+        message = "removed batch {}".format(request_uuid)
+        return make_response(jsonify(status="OK", message=message), 200)
