@@ -17,18 +17,19 @@ $(document).ready(function() {
 		  const byteArray = new Uint8Array(byteNumbers);
 		  byteArrays.push(byteArray);
 		}
-	  
-		const blob = new Blob(byteArrays, {type: contentType});
-		return blob;
+
+	return new Blob(byteArrays, {type: contentType});
 	}
 
 	const onUploadError = (jqxhr, status, errorMessage) => {
-		$('.loader').invisible();
+		$('#loadingBtn').attr('hidden', true);
 
 		console.log('On Upload Error', errorMessage);
 	}
 
 	const onUploadSuccess = (response, status, jqxhr) => {
+
+		$('#uploadBtn').attr('hidden', false);
 
 		//$('.loader').invisible();
 		$('#portfolio-container').visible();
@@ -36,6 +37,8 @@ $(document).ready(function() {
 		//Enable the download section if the response contains actual results
 		if(Object.keys(response.results).length > 0){
 			$('#download').show();
+			$('#loadingBtn').attr('hidden', true);
+			$('#uploadBtn').attr('hidden', false);
 		}
 
 		let row = $('#portfolio-container').find('.row')[0];
@@ -83,8 +86,7 @@ $(document).ready(function() {
 	}
 
 	const onDownloadError = (jqxhr, status, errorMessage) => {
-		$('.loader').invisible();
-
+		$('#loadingBtn').attr('hidden', true);
 		console.log('On Download Error', errorMessage);
 	}
 
@@ -160,15 +162,15 @@ $(document).ready(function() {
 
 	$('#uploadBtn').click((event) => {
 		event.preventDefault();
-		
-		$('#portfolio-container').show();
-		$('#portfolio-container').invisible();
-		$('#download').hide();
-		//$('.loader').visible();
-		
 		console.log('Upload button clicked');
 
+		$('#portfolio-container').show().invisible();
+		$('#download').hide();
+
         if (files && files.length > 0) {
+
+        	$('#uploadBtn').attr('hidden', true);
+			$('#loadingBtn').attr('hidden', false);
 
             let file = files[0];
 			let fileName = file.name.split('.')[0];
@@ -182,6 +184,9 @@ $(document).ready(function() {
 
 			uploadFile(formData, onUploadSuccess, onUploadError, params);
 		}
+        else {
+			alert("No file has been provided. Analysis shall not start");
+		}
 	});
 
 	jQuery.fn.visible = function() {
@@ -194,7 +199,7 @@ $(document).ready(function() {
 	
 	jQuery.fn.visibilityToggle = function() {
 		return this.css('visibility', function(i, visibility) {
-			return (visibility == 'visible') ? 'hidden' : 'visible';
+			return (visibility === 'visible') ? 'hidden' : 'visible';
 		});
 	};
 });
