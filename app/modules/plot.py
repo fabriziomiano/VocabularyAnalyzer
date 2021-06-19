@@ -1,10 +1,11 @@
 import os
+
 import seaborn as sns
-from VocAnal import app, RESULTS_FOLDER
-from VocAnal.utils.constants import ENTITY_ABBRV_MAP
-from VocAnal.utils.misc import b64str_from_path
+from flask import make_response, jsonify, current_app as app
 from matplotlib import pyplot as plt
-from flask import make_response, jsonify
+
+from app.utils.constants import ENTITY_ABBRV_MAP
+from app.utils.misc import b64str_from_path
 
 
 def save_barplot(data, labels, n_max, path, title):
@@ -18,12 +19,12 @@ def save_barplot(data, labels, n_max, path, title):
     :param title: str
     :return: None
     """
-    x, y = zip(*data)
+    y, x = zip(*data)
     sns.set(style="whitegrid")
     plt.figure(figsize=(n_max, n_max / 2))
     ax = sns.barplot(
-        list(y)[:n_max],
-        list(x)[:n_max],
+        x=list(x)[:n_max],
+        y=list(y)[:n_max],
         palette="Blues_d")
     ax.set_title(title, fontsize=18)
     plt.xticks(fontsize=18)
@@ -72,8 +73,8 @@ def plot_pos(data, out_dir_name, n_max_words, type_pos):
         )
     else:
         plot_title = (
-            "The {} different ".format(len(data)) +
-            type_pos + " found"
+                "The {} different ".format(len(data)) +
+                type_pos + " found"
         )
     plot_labels = [type_pos, "% of occurrence"]
     plot_fp = os.path.join(out_dir_name, type_pos + ".png")
@@ -96,7 +97,7 @@ def plot_kwords(kwords_data, out_dir_name, n_max_words):
     """
     message = "Making plot for the top {} keywords".format(n_max_words)
     app.logger.debug(message)
-    kwords_labels = ["Keywords", "Counts"]
+    kwords_labels = ["Keywords", "Counts", "Entity Types"]
     kwords_plot_fp = os.path.join(out_dir_name, "kwords_count.png")
     save_barplot(
         kwords_data,
@@ -108,7 +109,7 @@ def plot_kwords(kwords_data, out_dir_name, n_max_words):
 
 
 def serve_plots(request_uuid):
-    results_dir = os.path.join(RESULTS_FOLDER, request_uuid)
+    results_dir = os.path.join(app.config["RESULTS_FOLDER"], request_uuid)
     results = dict()
     for plot_filename in os.listdir(results_dir):
         plot_name = os.path.splitext(plot_filename)[0]

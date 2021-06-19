@@ -1,23 +1,19 @@
-FROM python:3.7.4
+# Grab the latest alpine image
+FROM python:3.8
 
-RUN mkdir /code
-WORKDIR /code
-ADD requirements.txt /code/
-RUN pip install -r requirements.txt
-RUN python3 -c "import nltk; nltk.download('stopwords')"
-ADD . /code/
+# maintainer stuff
+LABEL maintainer='fabriziomiano@gmail.com'
 
-# ssh
-ENV SSH_PASSWD "root:Docker!"
-RUN apt-get update \
-        && apt-get install -y --no-install-recommends dialog \
-        && apt-get update \
-	&& apt-get install -y --no-install-recommends openssh-server \
-	&& echo "$SSH_PASSWD" | chpasswd
+# Add requirements and install dependencies
+ADD ./requirements.txt /tmp/requirements.txt
+RUN pip3 install --upgrade pip && \
+    pip3 install --no-cache-dir -q -r /tmp/requirements.txt
 
-COPY sshd_config /etc/ssh/
-COPY init.sh /usr/local/bin/
+# Add our code
+ADD . /opt/app/
+WORKDIR /opt/app
+RUN python -c 'import nltk; nltk.download("stopwords")'
 
-RUN chmod u+x /usr/local/bin/init.sh
-EXPOSE 5000 2222
-ENTRYPOINT ["init.sh"]
+# Run the app.  CMD is required to run on Heroku
+# crate the collections on DB before running the gunicorn server
+CMD gunicorn --bind 0.0.0.0:5000 wsgi:app
