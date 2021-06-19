@@ -1,1 +1,1 @@
-web: gunicorn VocAnal:app
+web: gunicorn wsgi:app
