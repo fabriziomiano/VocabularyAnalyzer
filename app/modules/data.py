@@ -1,12 +1,14 @@
 import os
-from flask import make_response, jsonify
 from collections import Counter
 from io import BytesIO
+
+from flask import make_response, jsonify, current_app as app
 from pdfminer.pdfparser import PDFSyntaxError
-from VocAnal import app, UPLOAD_FOLDER, RESULTS_FOLDER, NLP
-from VocAnal.classes.Text import TextPreprocessor
-from VocAnal.modules.plot import plot_pos, plot_kwords, serve_plots
-from VocAnal.utils.misc import (
+
+from app import nlp
+from app.classes.Text import TextPreprocessor
+from app.modules.plot import plot_pos, plot_kwords, serve_plots
+from app.utils.misc import (
     extract_text, create_nonexistent_dir, save_wordcloud)
 
 
@@ -69,12 +71,12 @@ def get_data(nlp, doc):
     entities_data = Counter(entities).most_common()
     entity_types_data = Counter(entity_types).most_common()
     data = {
-        "adverbs": adverbs_data,
-        "verbs": verbs_data,
-        "nouns": nouns_data,
-        "adjectives": adjectives_data,
-        "entities": entities_data,
-        "entity_types": entity_types_data
+        "Adverbs": adverbs_data,
+        "Verbs": verbs_data,
+        "Nouns": nouns_data,
+        "Adjectives": adjectives_data,
+        "Entities": entities_data,
+        "Entity types": entity_types_data
     }
     return data
 
@@ -116,7 +118,8 @@ def normalize_data(data):
 
 
 def analyze(request_uuid, filename):
-    filepath = os.path.join(UPLOAD_FOLDER, request_uuid, filename)
+    filepath = os.path.join(app.config["UPLOAD_FOLDER"], request_uuid,
+                            filename)
     n_max_words = 15
     try:
         with open(filepath, "rb") as file_in:
@@ -128,10 +131,10 @@ def analyze(request_uuid, filename):
     corpus = extract_text(pdf_byte_content)
     app.logger.info("Loading spaCy English model may take up to 1 minute")
     app.logger.info("Model loaded")
-    doc = NLP(corpus)
-    doc_data = get_data(NLP, doc)
+    doc = nlp(corpus)
+    doc_data = get_data(nlp, doc)
     norm_data = normalize_data(doc_data)
-    results_dir = os.path.join(RESULTS_FOLDER, request_uuid)
+    results_dir = os.path.join(app.config["RESULTS_FOLDER"], request_uuid)
     create_nonexistent_dir(results_dir)
     save_wordcloud(corpus, results_dir)
     for pos in norm_data.keys():

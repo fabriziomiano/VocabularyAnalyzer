@@ -1,10 +1,12 @@
-import os
 import errno
+import os
 from base64 import b64encode
+
+from flask import current_app as app
 from wordcloud import WordCloud
-from VocAnal import app
-from VocAnal.classes.Pdf import PdfHandler
-from VocAnal.utils.constants import ALLOWED_EXTENSIONS
+
+from app.classes.Pdf import PdfHandler
+from app.utils.constants import ALLOWED_EXTENSIONS
 
 
 def allowed_file(filename):
