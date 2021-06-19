@@ -12,7 +12,8 @@ RUN pip3 install --upgrade pip && \
 # Add our code
 ADD . /opt/app/
 WORKDIR /opt/app
+RUN python -c 'import nltk; nltk.download("stopwords")'
 
 # Run the app.  CMD is required to run on Heroku
 # crate the collections on DB before running the gunicorn server
-CMD gunicorn --bind 0.0.0.0:$PORT wsgi:app
+CMD gunicorn --bind 0.0.0.0:5000 wsgi:app
