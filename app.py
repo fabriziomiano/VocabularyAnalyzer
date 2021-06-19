@@ -1,7 +1,7 @@
 """
 This script runs the vocab anal application using a development server.
 """
-from VocAnal import app
+from app import app
 
 
 if __name__ == '__main__':
