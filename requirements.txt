@@ -10,3 +10,4 @@ https://github.com/explosion/spacy-models/releases/download/en_core_web_sm-3.0.0
 https://github.com/explosion/spacy-models/releases/download/en_core_web_md-3.0.0/en_core_web_md-3.0.0.tar.gz
 wordcloud==1.8.1
 Werkzeug==2.0.1
+gunicorn==20.1.0
